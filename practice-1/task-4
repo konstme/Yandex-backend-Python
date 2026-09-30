@@ -1,0 +1,13 @@
+# Напишите программу, которая:
+# • принимает строку от пользователя;
+# • подсчитывает количество каждого символа (без учета регистра);
+# • находит 3 самых частых символа.
+
+from collections import Counter
+
+user_input = input("Введите строку: ").lower()
+counter = Counter(user_input)
+most_common = counter.most_common(3)
+print("Три самых частых символа:")
+for char, count in most_common:
+    print(f"{char}: {count}")
