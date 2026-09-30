@@ -1,0 +1,17 @@
+#Создайте генератор паролей из 8 символов,
+#содержащий:
+#• 3 случайные буквы (верхний регистр);
+#• 3 случайные цифры;
+#• 2 специальных символа (!@#$%^&*).
+
+import random
+import string
+
+password = []
+for _ in range(3):
+    password.append(random.choice(string.ascii_uppercase))
+    password.append(random.choice(string.digits))
+for _ in range(2):
+    password.append(random.choice("!@#$%^&*"))
+random.shuffle(password)
+print(''.join(password))
