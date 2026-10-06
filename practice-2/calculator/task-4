@@ -1,0 +1,5 @@
+def divide(a: float, b: float) -> float:
+    """Вернуть частное; при нулевом делителе вызвать ValueError."""
+    if b == 0:
+        raise ValueError("Делить на ноль нельзя.")
+    return a / b

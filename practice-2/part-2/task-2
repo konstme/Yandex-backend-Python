@@ -1,0 +1,19 @@
+"""Определение тройки победителей олимпиады."""
+
+
+def check_winners(scores: list, student_score: int) -> None:
+    """Напечатать результат, не возвращая значения и не меняя список."""
+    if student_score in sorted(scores, reverse=True)[:3]:
+        print("Вы в тройке победителей!")
+    else:
+        print("Вы не попали в тройку победителей.")
+
+
+if __name__ == "__main__":
+    try:
+        scores = [int(x) for x in input("Баллы через пробел: ").split()]
+        if not scores or len(scores) != len(set(scores)):
+            raise ValueError("Нужен непустой список разных баллов.")
+        check_winners(scores, int(input("Баллы Стаса: ")))
+    except ValueError as error:
+        print("Ошибка:", error)

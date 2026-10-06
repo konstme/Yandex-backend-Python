@@ -1,0 +1,24 @@
+"""Отчёт о фасовке пирожных."""
+
+
+def print_pack_report(number: int) -> None:
+    """Вывести способы фасовки от number до 1 включительно."""
+    if type(number) is not int or number <= 1:
+        raise ValueError("Введите целое число больше единицы.")
+    for count in range(number, 0, -1):
+        if count % 3 == 0 and count % 5 == 0:
+            message = "расфасуем по 3 или по 5"
+        elif count % 5 == 0:
+            message = "расфасуем по 5"
+        elif count % 3 == 0:
+            message = "расфасуем по 3"
+        else:
+            message = "не заказываем!"
+        print(f"{count} - {message}")
+
+
+if __name__ == "__main__":
+    try:
+        print_pack_report(int(input("Количество пирожных: ")))
+    except ValueError as error:
+        print("Ошибка:", error)

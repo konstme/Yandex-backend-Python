@@ -1,0 +1,54 @@
+"""Терминальная игра «Виселица»."""
+
+import secrets
+
+WORDS = ("питон", "функция", "переменная", "программа", "алгоритм")
+STAGES = (
+    " +---+\n |   |\n     |\n     |\n     |\n=====",
+    " +---+\n |   |\n O   |\n     |\n     |\n=====",
+    " +---+\n |   |\n O   |\n |   |\n     |\n=====",
+    " +---+\n |   |\n O   |\n/|   |\n     |\n=====",
+    " +---+\n |   |\n O   |\n/|\\  |\n     |\n=====",
+    " +---+\n |   |\n O   |\n/|\\  |\n/    |\n=====",
+    " +---+\n |   |\n O   |\n/|\\  |\n/ \\  |\n=====",
+)
+
+
+def play(word=None):
+    """Играть до победы, шести ошибок или команды выхода."""
+    word = word or secrets.choice(WORDS)
+    guessed = set()
+    mistakes = 0
+    while True:
+        print(STAGES[mistakes])
+        print(
+            " ".join(letter if letter in guessed else "_" for letter in word)
+        )
+        print("Названные буквы:", ", ".join(sorted(guessed)) or "нет")
+        if set(word) <= guessed:
+            print(f"Вы победили! Слово: {word}")
+            return
+        if mistakes == 6:
+            print(f"Попытки закончились. Слово: {word}")
+            return
+        letter = input("Буква (0 - выйти): ").strip().lower()
+        if letter == "0":
+            return
+        if (
+            len(letter) != 1
+            or letter not in "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+        ):
+            print("Введите одну русскую букву.")
+        elif letter in guessed:
+            print("Эта буква уже была.")
+        else:
+            guessed.add(letter)
+            if letter not in word:
+                mistakes += 1
+
+
+if __name__ == "__main__":
+    try:
+        play()
+    except (EOFError, KeyboardInterrupt):
+        print("\nИгра завершена.")

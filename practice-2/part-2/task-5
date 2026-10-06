@@ -1,0 +1,54 @@
+"""Конвертация римских чисел в диапазоне 1..3999."""
+
+PAIRS = (
+    (1000, "M"),
+    (900, "CM"),
+    (500, "D"),
+    (400, "CD"),
+    (100, "C"),
+    (90, "XC"),
+    (50, "L"),
+    (40, "XL"),
+    (10, "X"),
+    (9, "IX"),
+    (5, "V"),
+    (4, "IV"),
+    (1, "I"),
+)
+
+
+def to_roman(number: int) -> str:
+    """Преобразовать целое число 1..3999 в римскую запись."""
+    if type(number) is not int or not 1 <= number <= 3999:
+        raise ValueError("Введите целое число от 1 до 3999.")
+    result = []
+    for value, symbol in PAIRS:
+        count, number = divmod(number, value)
+        result.append(symbol * count)
+    return "".join(result)
+
+
+def from_roman(text: str) -> int:
+    """Проверить каноническую римскую запись и вернуть число."""
+    text = text.strip().upper()
+    values = {symbol: value for value, symbol in PAIRS if len(symbol) == 1}
+    if not text or any(letter not in values for letter in text):
+        raise ValueError("Некорректное римское число.")
+    total = 0
+    for index, letter in enumerate(text):
+        value = values[letter]
+        if index + 1 < len(text) and value < values[text[index + 1]]:
+            total -= value
+        else:
+            total += value
+    if not 1 <= total <= 3999 or to_roman(total) != text:
+        raise ValueError("Некорректное римское число.")
+    return total
+
+
+if __name__ == "__main__":
+    try:
+        value = input("Обычное или римское число: ").strip()
+        print(to_roman(int(value)) if value.isdecimal() else from_roman(value))
+    except ValueError as error:
+        print("Ошибка:", error)

@@ -1,0 +1,53 @@
+"""Шифр Цезаря для русского и английского алфавитов."""
+
+ENGLISH = "abcdefghijklmnopqrstuvwxyz"
+RUSSIAN = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+
+
+def detect_language(text: str) -> str:
+    """Определить язык по буквам, включая смешанный текст."""
+    english = any(letter in ENGLISH for letter in text.lower())
+    russian = any(letter in RUSSIAN for letter in text.lower())
+    if english and russian:
+        return "смешанный"
+    if russian:
+        return "русский"
+    if english:
+        return "английский"
+    return "не определён"
+
+
+def encrypt(text: str, shift: int) -> str:
+    """Сдвинуть буквы, сохраняя регистр, пробелы и пунктуацию."""
+    result = []
+    for letter in text:
+        lower = letter.lower()
+        if lower in ENGLISH:
+            alphabet = ENGLISH
+        elif lower in RUSSIAN:
+            alphabet = RUSSIAN
+        else:
+            result.append(letter)
+            continue
+        index = (alphabet.index(lower) + shift) % len(alphabet)
+        replacement = alphabet[index]
+        result.append(replacement.upper() if letter.isupper() else replacement)
+    return "".join(result)
+
+
+def decrypt(text: str, shift: int) -> str:
+    """Расшифровать текст с известным сдвигом."""
+    return encrypt(text, -shift)
+
+
+if __name__ == "__main__":
+    try:
+        mode = input("1 - шифровать, 2 - расшифровать: ").strip()
+        if mode not in ("1", "2"):
+            raise ValueError("Выберите 1 или 2.")
+        text = input("Текст: ")
+        shift = int(input("Сдвиг: "))
+        print("Язык:", detect_language(text))
+        print(encrypt(text, shift) if mode == "1" else decrypt(text, shift))
+    except ValueError as error:
+        print("Ошибка:", error)

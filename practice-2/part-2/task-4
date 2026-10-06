@@ -1,0 +1,61 @@
+"""Генератор паролей с настраиваемым составом."""
+
+import secrets
+import string
+
+
+def generate_password(
+    length=12, lowercase=True, uppercase=True, symbols=True, digits=True
+):
+    """Создать пароль, содержащий каждую выбранную группу символов."""
+    groups = []
+    for enabled, alphabet in (
+        (lowercase, string.ascii_lowercase),
+        (uppercase, string.ascii_uppercase),
+        (symbols, string.punctuation),
+        (digits, string.digits),
+    ):
+        if enabled:
+            groups.append(alphabet)
+    if not groups:
+        raise ValueError("Выберите хотя бы одну группу символов.")
+    if type(length) is not int or length < len(groups):
+        raise ValueError(f"Длина должна быть не меньше {len(groups)}.")
+    password = [secrets.choice(group) for group in groups]
+    alphabet = "".join(groups)
+    password.extend(
+        secrets.choice(alphabet) for _ in range(length - len(password))
+    )
+    secrets.SystemRandom().shuffle(password)
+    return "".join(password)
+
+
+def ask_yes(prompt):
+    """Получить настройку с проверкой ответа."""
+    while True:
+        answer = input(prompt + " [д/н]: ").strip().lower()
+        if answer in ("д", "да", "y", "yes"):
+            return True
+        if answer in ("н", "нет", "n", "no"):
+            return False
+        print("Введите д или н.")
+
+
+if __name__ == "__main__":
+    print("=" * 40)
+    print("          ГЕНЕРАТОР ПАРОЛЕЙ")
+    print("=" * 40)
+    try:
+        length = int(input("Длина пароля: "))
+        settings = [
+            ask_yes(label)
+            for label in (
+                "Строчные буквы",
+                "Заглавные буквы",
+                "Специальные символы",
+                "Цифры",
+            )
+        ]
+        print("\nВаш пароль:", generate_password(length, *settings))
+    except ValueError as error:
+        print("Ошибка:", error)
