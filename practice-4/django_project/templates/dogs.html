@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Породы собак{% endblock %}
+{% block content %}
+<h1>Породы собак</h1>
+<div class="card">
+  <form method="post">{% csrf_token %}
+    <label for="breeds">Введите породы через запятую</label>
+    <input id="breeds" name="breeds" size="50" value="{{ entered }}" placeholder="african, chow, dingo" required>
+    <button type="submit">Показать фотографии</button>
+  </form>
+</div>
+{% for error in errors %}<p class="error">{{ error }}</p>{% endfor %}
+{% if photos %}<h2>Фотографии</h2><div class="grid">
+  {% for photo in photos %}<div class="card"><h3>{{ photo.breed }}</h3><img src="{{ photo.url }}" alt="Собака породы {{ photo.breed }}"></div>{% endfor %}
+</div>{% endif %}
+<div class="card"><h2>Все породы ({{ breeds|length }})</h2><ol class="breeds">
+  {% for breed in breeds %}<li>{{ breed }}</li>{% empty %}<li>Список недоступен</li>{% endfor %}
+</ol></div>
+{% endblock %}

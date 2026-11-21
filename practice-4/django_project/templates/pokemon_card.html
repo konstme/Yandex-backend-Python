@@ -1,0 +1,9 @@
+<div class="card">
+  <h3>{{ member.name }}</h3>
+  {% if member.image %}<img src="{{ member.image }}" alt="{{ member.name }}">{% endif %}
+  <p><strong>Тип:</strong> {{ member.types|join:', ' }}<br>
+  <strong>Рост:</strong> {{ member.height }} м; <strong>вес:</strong> {{ member.weight }} кг<br>
+  <strong>Способности:</strong> {{ member.abilities|join:', ' }}<br>
+  <strong>HP:</strong> {{ member.hp }}; <strong>атака:</strong> {{ member.attack }}; <strong>защита:</strong> {{ member.defense }}; <strong>скорость:</strong> {{ member.speed }}</p>
+  {% if removable %}<form action="{% url 'remove_pokemon' %}" method="post">{% csrf_token %}<input type="hidden" name="name" value="{{ member.name }}"><button class="danger" type="submit">Удалить</button></form>{% endif %}
+</div>

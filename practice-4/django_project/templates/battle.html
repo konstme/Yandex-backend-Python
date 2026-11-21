@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Тренировочный бой{% endblock %}
+{% block content %}
+<h1>Тренировочный бой</h1>
+<p>Выберите двух разных покемонов из команды. Победитель определяется в пошаговом бою по HP, атаке, защите и скорости.</p>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+{% if members|length < 2 %}<p class="error">Для боя нужны хотя бы два покемона. <a href="{% url 'team' %}">Добавьте их в команду</a>.</p>{% else %}
+<form method="post" class="card">{% csrf_token %}
+  <label for="first">Первый покемон</label><select id="first" name="first">{% for member in members %}<option value="{{ member.name }}" {% if member.name == first %}selected{% endif %}>{{ member.name }}</option>{% endfor %}</select>
+  <label for="second">Второй покемон</label><select id="second" name="second">{% for member in members %}<option value="{{ member.name }}" {% if member.name == second %}selected{% endif %}>{{ member.name }}</option>{% endfor %}</select>
+  <p><button type="submit">Начать бой</button></p>
+</form>{% endif %}
+{% if winner %}<div class="card"><h2>Результат: {{ winner }}</h2><ol>{% for step in log %}<li>{{ step }}</li>{% endfor %}</ol></div>{% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Практика лекции 4{% endblock %}
+{% block content %}
+<h1>Практика лекции 4</h1>
+<div class="grid">
+  <div class="card"><h2>Dog API</h2><p>Список пород и фотографии выбранных собак.</p><a class="button" href="{% url 'dogs' %}">Открыть</a></div>
+  <div class="card"><h2>Pokémon</h2><p>Соберите команду, найдите покемона и проведите тренировочный бой.</p><a class="button" href="{% url 'team' %}">Открыть</a></div>
+</div>
+{% endblock %}

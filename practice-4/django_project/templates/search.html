@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Поиск Pokémon{% endblock %}
+{% block content %}
+<h1>Поиск покемона</h1>
+<form action="{% url 'search_pokemon' %}" method="get"><label for="name">Имя</label><input id="name" name="name" value="{{ query }}" required><button type="submit">Найти</button></form>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+{% if found %}{% include 'pokemon_card.html' with member=found removable=False %}{% endif %}
+<p><a href="{% url 'team' %}">К команде</a></p>
+{% endblock %}
